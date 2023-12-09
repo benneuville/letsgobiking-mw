@@ -90,7 +90,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="--toremove.cs" />
     <Compile Include="Connected Services\proxy\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -99,7 +98,6 @@
     <Compile Include="ISoapServ.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Request.cs" />
     <Compile Include="SoapServ.cs" />
     <Compile Include="Utilities.cs" />
   </ItemGroup>

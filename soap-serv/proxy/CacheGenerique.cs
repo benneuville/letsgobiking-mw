@@ -8,11 +8,20 @@ using System.Threading.Tasks;
 
 namespace proxycache
 {
+    /** Cache Générique T
+     ** 
+     **/
     public class CacheGenerique<T>
     {
         ObjectCache cache = MemoryCache.Default;
         DateTimeOffset dt_default = ObjectCache.InfiniteAbsoluteExpiration;
 
+        /** recupere un objet T dans le cache
+         ** 
+         ** @param CacheItemName : nom de l'objet dans le cache
+         ** @return T : objet T
+         ** 
+         **/
         public T Get(string CacheItemName)
         {
             if (!cache.Contains(CacheItemName))
@@ -25,6 +34,13 @@ namespace proxycache
             return (T)cache.Get(CacheItemName);
         }
 
+        /** recupere un objet T dans le cache
+         ** 
+         ** @param CacheItemName : nom de l'objet dans le cache
+         ** @param dt_seconds : temps en secondes avant expiration
+         ** @return T : objet T
+         ** 
+         **/
         public T Get(string CacheItemName, double dt_seconds)
         {
             if (!cache.Contains(CacheItemName))
@@ -37,6 +53,13 @@ namespace proxycache
             return (T)cache.Get(CacheItemName);
         }
 
+        /** recupere un objet T dans le cache
+         ** 
+         ** @param CacheItemName : nom de l'objet dans le cache
+         ** @param dt : date d'expiration
+         ** @return T : objet T
+         ** 
+         **/
         public T Get(string CacheItemName, DateTimeOffset dt)
         {
             if (!cache.Contains(CacheItemName))

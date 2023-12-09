@@ -33,6 +33,13 @@ namespace proxycache
 
         }
 
+
+        /** Requete HTTP
+         ** 
+         ** @param request : requete HTTP
+         ** @return string : reponse HTTP
+         ** 
+         **/
         public static async Task<string> requete(string request)
         {
             try

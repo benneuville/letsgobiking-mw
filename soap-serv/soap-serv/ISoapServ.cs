@@ -14,6 +14,13 @@ using System.Runtime.Serialization;
 
 namespace soap_serv
 {
+
+    /** Interface du serveur SOAP
+     ** 
+     ** @param GetAddresses : retourne une liste d'adresse correspondant à l'adresse en paramètre
+     ** @param getPath : retourne un objet Contract_AMQ_Trip contenant une liste de trajet entre deux adresses
+     ** 
+     **/
     [ServiceContract()]
     interface ISoapServ
     {
@@ -29,6 +36,9 @@ namespace soap_serv
 
 
     /** Objet retourné par le serveur vers les clients
+     * @param nameQueue : nom de la queue
+     * @param isQueue : true si la queue existe, false sinon
+     * @param allTrip : liste de trajet
      * 
      */
     [DataContract]
@@ -47,6 +57,9 @@ namespace soap_serv
 
     }
 
+    /** Position geo
+     * 
+     */
     [DataContract]
     public class Position
     {
@@ -69,6 +82,14 @@ namespace soap_serv
         }
     }
 
+    /** Adresse
+     * @param position : position geo
+     * @param formatted : adresse formatté
+     * @param city : ville
+     * @param country : pays
+     * @param road : rue
+     * @param houseNumber : numero de rue
+     */
     [DataContract]
     public class Address
     {
@@ -111,6 +132,18 @@ namespace soap_serv
     }
 
 
+    /** Direction
+     * est composé d'une liste de position (way_points) et de deux positions (start et end)
+     * correspond à un trajet entre deux points
+     * 
+     * @param direction : direction à prendre
+     * @param start : position de départ
+     * @param way_points : liste de position intermédiaire
+     * @param end : position d'arrivée
+     * @param duration : durée du trajet en seconde
+     * @param distance : distance du trajet en mètre
+     * 
+     */
     [DataContract]
     public class Direction
     {
@@ -139,8 +172,13 @@ namespace soap_serv
         }
     }
 
-    //Trip
-
+    /** Trajet
+     * @param directions : liste de direction
+     * @param type : type de trajet (foot_walking ou cycling_regular)
+     * @param duration : durée du trajet en seconde
+     * @param distance : distance du trajet en mètre
+     * 
+     */
     [DataContract]
     public class Trip
     {

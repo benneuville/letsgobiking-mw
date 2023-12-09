@@ -15,12 +15,16 @@ namespace soap_serv
 {
 
 
+    /** relation Contrat - trajet
+     **/
     public class TripContrat
     {
         public Trip trip { get; set; }
         public JCDContract contract { get; set; }
     }
 
+    /** relation trajet - station
+     **/
     public class TripStation
     {
         public Trip trip { get; set; }
@@ -29,6 +33,8 @@ namespace soap_serv
 
     //Vecteurs
 
+    /** Vecteur vers un contrat
+     **/
     class VecteurContrat
     {
         public JCDContract JCDContract { get; set; }
@@ -43,6 +49,8 @@ namespace soap_serv
 
     }
 
+    /** Vecteur vers une station
+     **/
     class VecteurStation
     {
         public JCDStation JCDStation { get; set; }
@@ -54,6 +62,10 @@ namespace soap_serv
         }
     }
 
+    /** Vecteur Base
+     * @param X : X
+     * @param Y : Y
+     **/
     public class Vecteur : IComparable<Vecteur>
     {
 
@@ -77,8 +89,8 @@ namespace soap_serv
         }
     }
 
-
-
+    /** Ville : relation nom - position
+     **/
     public class cityContract
     {
         public string name { get; set; }

@@ -8,6 +8,12 @@ using System.Threading.Tasks;
 namespace proxycache
 {
 
+    /** Interface du proxy cache
+     ** 
+     ** cache pour les requetes JCDecaux
+     ** cache pour les requetes OpenCageData
+     ** 
+     **/
     public class ProxyCache : IProxyCache
 
     {
