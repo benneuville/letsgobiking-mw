@@ -59,6 +59,14 @@ namespace soap_serv
         {
             return "lat : " + latitude + "; long : " + longitude + "\n";
         }
+
+        public override bool Equals(Object obj)
+        {
+            if (obj == null) return false;
+            if (!(obj is Position)) return false;
+            Position position = (Position)obj;
+            return position.latitude.Equals(latitude) && position.longitude.Equals(longitude);
+        }
     }
 
     [DataContract]

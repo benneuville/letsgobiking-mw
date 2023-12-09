@@ -110,17 +110,17 @@ namespace soap_serv
             Trip startToStation = getBestTripToStation(start, true);
             Trip stationToEnd = getBestTripToStation(end, false);
             Trip footwalking = getTrip(start.position, end.position, TypeOfTrip.foot_walking).Result;
-            if (startToStation.directions.ElementAt(startToStation.directions.Count() - 1).end == stationToEnd.directions.ElementAt(0).start)
+            if (startToStation.directions.ElementAt(startToStation.directions.Count() - 1).end.Equals(stationToEnd.directions.ElementAt(0).start))
             {
                 contract.allTrip.Add(footwalking);
             }
             else
             {
-                Task<Trip> stationToStation = getTrip(startToStation.directions.ElementAt(startToStation.directions.Count() - 1).end, stationToEnd.directions.ElementAt(0).start, TypeOfTrip.cycling_regular);
-
                 contract.allTrip.Add(startToStation);
+                Trip stationToStation = getTrip(startToStation.directions.ElementAt(startToStation.directions.Count() - 1).end, stationToEnd.directions.ElementAt(0).start, TypeOfTrip.cycling_regular).Result;
 
-                contract.allTrip.Add(stationToStation.Result);
+
+                contract.allTrip.Add(stationToStation);
                 contract.allTrip.Add(stationToEnd);
                 if (footwalking.duration < contract.allTrip.AsQueryable().Sum(x => x.duration))
                 {
@@ -347,9 +347,6 @@ namespace soap_serv
                     var json = proxyCacheClient.Get(tasks[i].Result.name);
                     if (!JsonDocument.Parse(json).RootElement.EnumerateArray().Count().Equals(0))
                     {
-                        if (tasks[i].Result.name.Equals("marseille"))
-                        { 
-                            Console.Write(""); }
                         JCDcontracts.Add(tasks[i].Result); }
                 }
             }
