@@ -17,7 +17,7 @@ namespace proxycache
         string contrat;
         private static string OCDkey = "3b468aae7c184bdea7b240ea301d2814";
         private static string OCDkeybackup = "4bd5b96da6bf40eebc28429db33e2089";
-        public static int OCDremaining = 0;
+        public static int OCDremaining = 99;
 
         /** Constructeur
          ** 
@@ -26,10 +26,16 @@ namespace proxycache
          **/
         public OCDItem(string address)
         {
-
-            string url = "https://api.opencagedata.com/geocode/v1/json?key=";
-            this.contrat = address;
-            json = requete(url, address).Result;
+            if (address == "init")
+            {
+                init();
+            }
+            else
+            {
+                string url = "https://api.opencagedata.com/geocode/v1/json?key=";
+                this.contrat = address;
+                json = requete(url, address).Result;
+            }
         }
 
         /** Requete HTTP
@@ -60,14 +66,40 @@ namespace proxycache
             return json;
         }
 
-        private static void checkBackup()
+        public static void init()
         {
-            if (OCDremaining < 100)
+            string url = "https://api.opencagedata.com/geocode/v1/json?key=" + OCDkey;
+            HttpClient client = new HttpClient();
+            var rep = client.GetAsync(url).Result;
+            if (rep.StatusCode == HttpStatusCode.PaymentRequired)
             {
-                string url = "https://api.opencagedata.com/geocode/v1/json?key=" + OCDkey;
+
+                url = "https://api.opencagedata.com/geocode/v1/json?key=" + OCDkeybackup;
+                client = new HttpClient();
+                rep = client.GetAsync(url).Result;
+                if (rep.StatusCode == HttpStatusCode.PaymentRequired)
+                {
+                    throw new Exception("OpenCageData API key limit reached");
+                }
+                else
+                {
+                    var tmp = OCDkey;
+                    OCDkey = OCDkeybackup;
+                    OCDkeybackup = tmp;
+                }
+            }
+            OCDremaining = JsonDocument.Parse(rep.Content.ReadAsStringAsync().Result).RootElement.GetProperty("rate").GetProperty("remaining").GetInt32();
+
+        }
+
+        public static void checkBackup()
+        {
+            if (OCDremaining < 50)
+            {
+                string url = "https://api.opencagedata.com/geocode/v1/json?key=" + OCDkeybackup;
                 HttpClient client = new HttpClient();
                 var rep = client.GetAsync(url).Result;
-                if(rep.StatusCode == HttpStatusCode.PaymentRequired)
+                if (rep.StatusCode != HttpStatusCode.PaymentRequired)
                 {
                     var tmp = OCDkey;
                     OCDkey = OCDkeybackup;
@@ -75,7 +107,7 @@ namespace proxycache
                 }
                 else
                 {
-                    OCDremaining = JsonDocument.Parse(rep.Content.ReadAsStringAsync().Result).RootElement.GetProperty("rate").GetProperty("remaining").GetInt32();
+                    throw new Exception("OpenCageData API key limit reached");
                 }
             }
         }
